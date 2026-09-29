@@ -150,7 +150,7 @@ from pdfua import coverage, describe_rules
 from pdfua.model import filter_findings, Confidence
 
 cov = coverage()
-print(cov.summary())  # "12 of 106 PDF/UA-1 rules (11%)"
+print(cov.summary())  # "16 of 106 PDF/UA-1 rules (15%) across 12 implemented checks"
 
 certain = filter_findings(report.findings, min_confidence=Confidence.CERTAIN)
 ```
@@ -163,9 +163,7 @@ certain = filter_findings(report.findings, min_confidence=Confidence.CERTAIN)
 alone, with no interpretation. `pdfua rules` prints this table from the registry,
 so the numbers cannot drift from the code.
 
-| Rule | PDF/UA-1 identifiers | PDF/UA-1 clause | WCAG | Severity | What it decides |
-
-| Rule | PDF/UA-1 | WCAG | Severity | What it decides |
+| Rule | PDF/UA-1 clause | WCAG | Severity | What it decides |
 |---|---|---|---|---|
 | `UA-01-005` | §7.1 | 1.3.1 | error | `/StructTreeRoot` is present |
 | `UA-01-002` | §6.2 | 1.3.1 | error | `/MarkInfo /Marked` is true |
