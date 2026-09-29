@@ -1,0 +1,537 @@
+{
+ "source": "ISO 14289-1:2014 (PDF/UA-1) as enumerated by the public veraPDF validation profile",
+ "note": "Identifiers only; descriptive text is not reproduced. 106 machine-checkable rules.",
+ "count": 106,
+ "rules": [
+  {
+   "clause": "5",
+   "test": "1",
+   "object": "MainXMPPackage"
+  },
+  {
+   "clause": "5",
+   "test": "2",
+   "object": "PDFUAIdentification"
+  },
+  {
+   "clause": "5",
+   "test": "3",
+   "object": "PDFUAIdentification"
+  },
+  {
+   "clause": "5",
+   "test": "4",
+   "object": "PDFUAIdentification"
+  },
+  {
+   "clause": "5",
+   "test": "5",
+   "object": "PDFUAIdentification"
+  },
+  {
+   "clause": "6.1",
+   "test": "1",
+   "object": "CosDocument"
+  },
+  {
+   "clause": "6.2",
+   "test": "1",
+   "object": "CosDocument"
+  },
+  {
+   "clause": "7.1",
+   "test": "1",
+   "object": "SEMarkedContent"
+  },
+  {
+   "clause": "7.1",
+   "test": "2",
+   "object": "SEMarkedContent"
+  },
+  {
+   "clause": "7.1",
+   "test": "3",
+   "object": "SESimpleContentItem"
+  },
+  {
+   "clause": "7.1",
+   "test": "4",
+   "object": "CosDocument"
+  },
+  {
+   "clause": "7.1",
+   "test": "5",
+   "object": "SENonStandard"
+  },
+  {
+   "clause": "7.1",
+   "test": "6",
+   "object": "PDStructElem"
+  },
+  {
+   "clause": "7.1",
+   "test": "7",
+   "object": "PDStructElem"
+  },
+  {
+   "clause": "7.1",
+   "test": "8",
+   "object": "PDDocument"
+  },
+  {
+   "clause": "7.1",
+   "test": "9",
+   "object": "MainXMPPackage"
+  },
+  {
+   "clause": "7.1",
+   "test": "10",
+   "object": "CosDocument"
+  },
+  {
+   "clause": "7.1",
+   "test": "11",
+   "object": "PDDocument"
+  },
+  {
+   "clause": "7.1",
+   "test": "12",
+   "object": "PDStructElem"
+  },
+  {
+   "clause": "7.2",
+   "test": "2",
+   "object": "PDOutline"
+  },
+  {
+   "clause": "7.2",
+   "test": "3",
+   "object": "SETable"
+  },
+  {
+   "clause": "7.2",
+   "test": "4",
+   "object": "SETR"
+  },
+  {
+   "clause": "7.2",
+   "test": "5",
+   "object": "SETHead"
+  },
+  {
+   "clause": "7.2",
+   "test": "6",
+   "object": "SETBody"
+  },
+  {
+   "clause": "7.2",
+   "test": "7",
+   "object": "SETFoot"
+  },
+  {
+   "clause": "7.2",
+   "test": "8",
+   "object": "SETH"
+  },
+  {
+   "clause": "7.2",
+   "test": "9",
+   "object": "SETD"
+  },
+  {
+   "clause": "7.2",
+   "test": "10",
+   "object": "SETR"
+  },
+  {
+   "clause": "7.2",
+   "test": "11",
+   "object": "SETable"
+  },
+  {
+   "clause": "7.2",
+   "test": "12",
+   "object": "SETable"
+  },
+  {
+   "clause": "7.2",
+   "test": "13",
+   "object": "SETable"
+  },
+  {
+   "clause": "7.2",
+   "test": "14",
+   "object": "SETable"
+  },
+  {
+   "clause": "7.2",
+   "test": "15",
+   "object": "SETableCell"
+  },
+  {
+   "clause": "7.2",
+   "test": "16",
+   "object": "SETable"
+  },
+  {
+   "clause": "7.2",
+   "test": "17",
+   "object": "SELI"
+  },
+  {
+   "clause": "7.2",
+   "test": "18",
+   "object": "SELBody"
+  },
+  {
+   "clause": "7.2",
+   "test": "19",
+   "object": "SEL"
+  },
+  {
+   "clause": "7.2",
+   "test": "20",
+   "object": "SELI"
+  },
+  {
+   "clause": "7.2",
+   "test": "21",
+   "object": "PDStructElem"
+  },
+  {
+   "clause": "7.2",
+   "test": "22",
+   "object": "PDStructElem"
+  },
+  {
+   "clause": "7.2",
+   "test": "23",
+   "object": "PDStructElem"
+  },
+  {
+   "clause": "7.2",
+   "test": "24",
+   "object": "PDAnnot"
+  },
+  {
+   "clause": "7.2",
+   "test": "25",
+   "object": "PDFormField"
+  },
+  {
+   "clause": "7.2",
+   "test": "26",
+   "object": "SETOCI"
+  },
+  {
+   "clause": "7.2",
+   "test": "27",
+   "object": "SETOC"
+  },
+  {
+   "clause": "7.2",
+   "test": "28",
+   "object": "SETOC"
+  },
+  {
+   "clause": "7.2",
+   "test": "29",
+   "object": "CosLang"
+  },
+  {
+   "clause": "7.2",
+   "test": "30",
+   "object": "SEMarkedContent"
+  },
+  {
+   "clause": "7.2",
+   "test": "31",
+   "object": "SEMarkedContent"
+  },
+  {
+   "clause": "7.2",
+   "test": "32",
+   "object": "SEMarkedContent"
+  },
+  {
+   "clause": "7.2",
+   "test": "33",
+   "object": "XMPLangAlt"
+  },
+  {
+   "clause": "7.2",
+   "test": "34",
+   "object": "SETextItem"
+  },
+  {
+   "clause": "7.2",
+   "test": "36",
+   "object": "SETHead"
+  },
+  {
+   "clause": "7.2",
+   "test": "37",
+   "object": "SETBody"
+  },
+  {
+   "clause": "7.2",
+   "test": "38",
+   "object": "SETFoot"
+  },
+  {
+   "clause": "7.2",
+   "test": "39",
+   "object": "SETable"
+  },
+  {
+   "clause": "7.2",
+   "test": "40",
+   "object": "SEL"
+  },
+  {
+   "clause": "7.2",
+   "test": "41",
+   "object": "SETable"
+  },
+  {
+   "clause": "7.2",
+   "test": "42",
+   "object": "SETable"
+  },
+  {
+   "clause": "7.2",
+   "test": "43",
+   "object": "SETable"
+  },
+  {
+   "clause": "7.3",
+   "test": "1",
+   "object": "SEFigure"
+  },
+  {
+   "clause": "7.5",
+   "test": "1",
+   "object": "SETD"
+  },
+  {
+   "clause": "7.5",
+   "test": "2",
+   "object": "SETD"
+  },
+  {
+   "clause": "7.7",
+   "test": "1",
+   "object": "SEFormula"
+  },
+  {
+   "clause": "7.9",
+   "test": "1",
+   "object": "SENote"
+  },
+  {
+   "clause": "7.9",
+   "test": "2",
+   "object": "SENote"
+  },
+  {
+   "clause": "7.10",
+   "test": "1",
+   "object": "PDOCConfig"
+  },
+  {
+   "clause": "7.10",
+   "test": "2",
+   "object": "PDOCConfig"
+  },
+  {
+   "clause": "7.11",
+   "test": "1",
+   "object": "CosFileSpecification"
+  },
+  {
+   "clause": "7.15",
+   "test": "1",
+   "object": "PDAcroForm"
+  },
+  {
+   "clause": "7.16",
+   "test": "1",
+   "object": "PDEncryption"
+  },
+  {
+   "clause": "7.20",
+   "test": "1",
+   "object": "PDXForm"
+  },
+  {
+   "clause": "7.20",
+   "test": "2",
+   "object": "PDXForm"
+  },
+  {
+   "clause": "7.4.2",
+   "test": "1",
+   "object": "SEHn"
+  },
+  {
+   "clause": "7.4.4",
+   "test": "1",
+   "object": "PDStructElem"
+  },
+  {
+   "clause": "7.4.4",
+   "test": "2",
+   "object": "SEH"
+  },
+  {
+   "clause": "7.4.4",
+   "test": "3",
+   "object": "SEHn"
+  },
+  {
+   "clause": "7.18.1",
+   "test": "1",
+   "object": "PDAnnot"
+  },
+  {
+   "clause": "7.18.1",
+   "test": "2",
+   "object": "PDAnnot"
+  },
+  {
+   "clause": "7.18.1",
+   "test": "3",
+   "object": "PDWidgetAnnot"
+  },
+  {
+   "clause": "7.18.2",
+   "test": "1",
+   "object": "PDTrapNetAnnot"
+  },
+  {
+   "clause": "7.18.3",
+   "test": "1",
+   "object": "PDPage"
+  },
+  {
+   "clause": "7.18.4",
+   "test": "1",
+   "object": "PDWidgetAnnot"
+  },
+  {
+   "clause": "7.18.4",
+   "test": "2",
+   "object": "SEForm"
+  },
+  {
+   "clause": "7.18.5",
+   "test": "1",
+   "object": "PDLinkAnnot"
+  },
+  {
+   "clause": "7.18.5",
+   "test": "2",
+   "object": "PDLinkAnnot"
+  },
+  {
+   "clause": "7.18.8",
+   "test": "1",
+   "object": "PDPrinterMarkAnnot"
+  },
+  {
+   "clause": "7.21.5",
+   "test": "1",
+   "object": "Glyph"
+  },
+  {
+   "clause": "7.21.6",
+   "test": "1",
+   "object": "TrueTypeFontProgram"
+  },
+  {
+   "clause": "7.21.6",
+   "test": "2",
+   "object": "PDTrueTypeFont"
+  },
+  {
+   "clause": "7.21.6",
+   "test": "3",
+   "object": "PDTrueTypeFont"
+  },
+  {
+   "clause": "7.21.6",
+   "test": "4",
+   "object": "TrueTypeFontProgram"
+  },
+  {
+   "clause": "7.21.7",
+   "test": "1",
+   "object": "Glyph"
+  },
+  {
+   "clause": "7.21.7",
+   "test": "2",
+   "object": "Glyph"
+  },
+  {
+   "clause": "7.21.8",
+   "test": "1",
+   "object": "Glyph"
+  },
+  {
+   "clause": "7.18.6.2",
+   "test": "1",
+   "object": "PDMediaClip"
+  },
+  {
+   "clause": "7.18.6.2",
+   "test": "2",
+   "object": "PDMediaClip"
+  },
+  {
+   "clause": "7.21.3.1",
+   "test": "1",
+   "object": "PDType0Font"
+  },
+  {
+   "clause": "7.21.3.2",
+   "test": "1",
+   "object": "PDCIDFont"
+  },
+  {
+   "clause": "7.21.3.3",
+   "test": "1",
+   "object": "PDCMap"
+  },
+  {
+   "clause": "7.21.3.3",
+   "test": "2",
+   "object": "CMapFile"
+  },
+  {
+   "clause": "7.21.3.3",
+   "test": "3",
+   "object": "PDReferencedCMap"
+  },
+  {
+   "clause": "7.21.4.1",
+   "test": "1",
+   "object": "PDFont"
+  },
+  {
+   "clause": "7.21.4.1",
+   "test": "2",
+   "object": "Glyph"
+  },
+  {
+   "clause": "7.21.4.2",
+   "test": "1",
+   "object": "PDType1Font"
+  },
+  {
+   "clause": "7.21.4.2",
+   "test": "2",
+   "object": "PDCIDFont"
+  }
+ ]
+}

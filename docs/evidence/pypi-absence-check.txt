@@ -1,0 +1,35 @@
+# PyPI absence check — 2026-09-29
+# Method: GET https://pypi.org/simple/<name>/ and https://pypi.org/pypi/<name>/json
+# 429/503/502/504 retried up to 4x with backoff (none were observed); a real 404 is reported as 404.
+# UA: curl/8.4.0
+
+name                         simple (status,bytes)   pypi-json (status,bytes)
+-----------------------------------------------------------------------------
+CONTROLS
+pypdf                        (200, 92325)            (200, 178771)
+pikepdf                      (200, 3570493)          (200, 5585991)
+pypdfium2                    (200, 900564)           (200, 1483810)
+pdfminer.six                 (200, 26479)            (200, 60481)
+CANDIDATES
+pdfua                        (404, 0)                (404, 0)
+pdfua-check                  (404, 0)                (404, 0)
+verapdf                      (404, 0)                (404, 0)
+pdf-accessibility            (404, 0)                (404, 0)
+pdf-ua-checker               (404, 0)                (404, 0)
+pdfua-validator              (404, 0)                (404, 0)
+accessibility-checker-pdf    (404, 0)                (404, 0)
+pdf-ua                       (404, 0)                (404, 0)
+pdfua-checker                (404, 0)                (404, 0)
+pdfaccessibility             (404, 0)                (404, 0)
+a11y-pdf                     (404, 0)                (404, 0)
+pdf-a11y                     (200, 1043)             (200, 52855)   <-- EXISTS
+
+# Full-index grep: downloaded https://pypi.org/simple/ (46.5 MB, 900,845 package names)
+#   'pdfua'      -> 0 matches
+#   'pdf-ua'     -> 0 matches
+#   'pdf_ua'     -> 0 matches
+#   'verapdf'    -> 0 matches
+#   '14289'      -> 0 matches
+#   'wcag'       -> 6: bellbriar-wcag, wcag-abbreviations, wcag-checker,
+#                     wcag-contrast-ratio, wcag-pdf-pytest, wcag-zoo
+#   'pdf-a11y'   -> 1: pdf-a11y

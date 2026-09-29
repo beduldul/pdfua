@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Secrets — never commit these
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+secrets/
+
+# Downloaded test corpora (regenerate with scripts/fetch_corpus.py)
+corpus/
+tests/fixtures/downloaded/
+*.pdf
+!tests/fixtures/**/*.pdf
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
