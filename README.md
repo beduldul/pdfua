@@ -62,7 +62,8 @@ PDFs, and it says plainly what it did not check.
 ### What the evidence showed
 
 This library was built only after a falsification pass against veraPDF 1.30.2 on
-16 real government PDFs from `govinfo.gov`, `irs.gov` and `ada.gov`. The full
+16 real government PDF files from `govinfo.gov`, `irs.gov` and `ada.gov` (15
+distinct documents — see below). The full
 evidence is in [`docs/FALSIFICATION.md`](docs/FALSIFICATION.md). The two findings
 that shaped the design:
 
@@ -73,6 +74,13 @@ that shaped the design:
   reachable, and both are implemented here. A prototype's untagged-text counter
   tracked veraPDF's `7.1-3` at 92–99.9% agreement (e.g. 86,118 vs 86,131 on one
   1,039-page document).
+
+Those totals cover **16 validated files, but only 15 distinct documents**: two
+corpus files (`p08.pdf` and `7ef8534308.pdf`) are byte-identical (sha256
+`9f5806…a853`), so the 643,471 figure double-counts 172,257 checks. Across the 15
+distinct documents the de-duplicated total is **471,214**, of which the same two
+rules account for 468,314 — **99.38%**, down from 99.55%. The concentration claim
+holds either way, which is what the design argument rests on.
 
 That is the honest case for this tool: the failures that dominate real documents
 are cheap to detect and currently require a JVM to detect.
@@ -232,9 +240,22 @@ reduce manual review; they do not replace it.**
 
 ### Findings marked `heuristic` are questions, not verdicts
 
-Two rules (`UA-07-001`, `UA-15-003`'s association branch) carry
-`confidence: heuristic`. They narrow the question for a human. Use
-`--certain-only` to see only findings the tool is certain about.
+Three finding sites carry `confidence: heuristic`, and in each case it is the
+*site*, not the whole rule, that is a judgement call:
+
+- **`UA-07-001`** (`DocumentTitleRule`) — every finding it emits is heuristic
+  (`src/pdfua/rules/language.py:60` sets the class-level confidence).
+- **`UA-13-004`** (`FigureAltTextRule`) — only the *empty or whitespace-only
+  `/Alt`* branch, which is stricter than the letter of §7.3 and that veraPDF
+  passes (`src/pdfua/rules/structure.py:73`). A figure with *no* `/Alt` at all
+  is a certain finding.
+- **`UA-15-003`** (`TableHeaderRule`) — only the *association* branch, where
+  header cells exist but none carry `/Scope` or `/Headers`
+  (`src/pdfua/rules/structure.py:144`). The rule itself has class-level severity
+  `ERROR`, and its other branches are certain.
+
+They narrow the question for a human. Use `--certain-only` to see only findings
+the tool is certain about.
 
 ### A mistake this project made, recorded on purpose
 
@@ -262,8 +283,12 @@ pdfua check report.pdf --format sarif || true
 verapdf --flavour ua1 --format json report.pdf
 ```
 
-`pdfua` gives you a JVM-free gate that runs in ~50 ms and produces SARIF for code
-scanning. veraPDF remains the reference implementation. **If your CI has a JVM and
+`pdfua` gives you a JVM-free gate that produces SARIF for code scanning. Runtime
+scales with document size and structure, so treat any single figure with care:
+measured on this project's corpus (median of five runs) it is **~2–3 ms for a
+184 KB document** and **~1.4 s for the 3.9 MB `ada.gov` web-rule PDF** — fast on
+typical documents, seconds on very large ones, and always far below the cost of
+starting a JVM. veraPDF remains the reference implementation. **If your CI has a JVM and
 you need a conformance claim, use veraPDF and do not install this.** The tool
 exists for the pipelines where a JVM is the reason nothing is checked at all.
 

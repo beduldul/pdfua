@@ -230,7 +230,7 @@ cross it.
 
 ---
 
-## 5. Prototype results on 16 real government PDFs
+## 5. Prototype results on 16 validated government PDFs (15 distinct documents)
 
 ### Corpus
 
@@ -238,6 +238,21 @@ cross it.
 the README). Sources: `govinfo.gov` (PLAW, USCODE, CFR, BUDGET, CHRG, CRPT, FR), `irs.gov`
 (1040, Pub 15, W-9, Pub 1), `ada.gov` (the Title II web rule itself). The download log is in
 `docs/evidence/corpus-download.log`.
+
+Two of these files are byte-identical — `p08.pdf` and `7ef8534308.pdf` (see "The decisive
+number" below) — so the corpus is **15 distinct documents** across **16 validated files**. The
+per-file figures are kept as measured; only the derived totals are stated both ways.
+
+> **Provenance gap, recorded rather than hidden.** The in-repo download log
+> (`docs/evidence/corpus-download.log`) covers only `p01`–`p24`. The results tables below are
+> computed from the veraPDF and prototype result JSON in `docs/evidence/`, which cover all 16
+> validated files including `p26`–`p37`. The download URLs for those later files are **not
+> recorded anywhere in this repository**: they were added after the initial batch and their
+> provenance survives only in the working corpus, not in the repo. `scripts/fetch_corpus.py`
+> carries a 13-URL `SOURCES` list that overlaps this set but does not pin the exact `p25`–`p40`
+> mapping, and no `list.txt`/`urls.txt` equivalent is committed. The affected files are `p26`,
+> `p27`, `p28`, `p29`, `p30`, `p32` and `p37` (the seven later files that appear in the results).
+> This is stated so a reader does not mistake the log for a complete audit trail.
 
 > **Environment trap worth recording:** `www.irs.gov`, `www.cdc.gov`, `www.ssa.gov` do not resolve
 > on this machine's system resolver, but they exist — DoH (Cloudflare/Google/Quad9) resolves them
@@ -283,22 +298,32 @@ java -cp <pack> org.verapdf.apps.GreenfieldCliWrapper --format json -f ua1 file.
 | p12 (**ada.gov web rule**) | False | **1** | **6** | `7.21.4.2-2` (6) — CIDSet only |
 | p26 (BUDGET) | False | 16 | 3,104 | `7.1-3` (2,978) |
 | p27 (FR notice) | False | 13 | 43,605 | `7.1-3` (21,185), `7.2-34` (19,972) |
+| p28 (USCODE 42) | False | 10 | 38,831 | `7.1-3` (19,423), `7.2-34` (19,400) |
 | p29 (CFR 29) | False | 11 | 125,950 | `7.1-3` (63,330), `7.2-34` (62,611) |
 | p30 (CRPT) | False | 10 | 475 | `7.1-3` (243), `7.2-34` (224) |
 | p32 (CHRG) | False | 11 | 3,994 | `7.1-3` (2,013), `7.2-34` (1,972) |
 | p37 (PLAW 118-1) | False | 10 | 66 | `7.1-3` (31), `7.2-34` (27) |
-| 7ef8534308 | False | 10 | 172,257 | `7.1-3` (86,131), `7.2-34` (86,118) |
+| 7ef8534308 | False | 10 | 172,257 | `7.1-3` (86,131), `7.2-34` (86,118) — **byte-identical to `p08`** |
 
 ### The decisive number
 
 Across the corpus, veraPDF reports **643,471 failed checks** spanning **23 distinct rules**.
 
-**Two rules account for 640,563 of them — 99.55%:**
+**But two of the 16 validated files are byte-identical.** `corpus/p08.pdf` and
+`corpus/7ef8534308.pdf` both hash to
+`9f5806990c5b1a7561132fb159782891ecfb1b64bfd130b07701de7efe2aa853` (2,690,984 bytes each),
+so the corpus is **15 distinct documents** and the 643,471 total **double-counts 172,257
+checks**. Across the 15 distinct documents the de-duplicated total is **471,214**.
 
-| rule | meaning | failed checks |
-|---|---|---|
-| `7.1-3` | *"Content shall be marked as Artifact or tagged as real content"* | 323,122 |
-| `7.2-34` | *"Natural language for text in page content shall be determined"* | 317,441 |
+**The concentration claim holds in both forms.** Two rules account for 640,563 of the
+643,471 file-level checks (**99.55%**), and 468,314 of the 471,214 de-duplicated checks
+(**99.38%**):
+
+| rule | meaning | failed checks (16 files) | failed checks (15 distinct) |
+|---|---|---|---|
+| `7.1-3` | *"Content shall be marked as Artifact or tagged as real content"* | 323,122 | 236,991 |
+| `7.2-34` | *"Natural language for text in page content shall be determined"* | 317,441 | 231,323 |
+| **both** | | **640,563 — 99.55%** | **468,314 — 99.38%** |
 
 Both are **pure-Python reachable** and both are exactly what the prototype targets. `7.1-3` is
 the untagged-content check (walk content streams, look for `BDC`/`BMC`/`EMC` and `/MCID`); `7.2-34`
@@ -348,7 +373,8 @@ accessibility validators distrusted, and the tool's credibility depends on not r
 **Yes, on the failures that dominate real documents, and it is honest about where it stops.**
 
 - 99.55% of all failed checks in this corpus are `7.1-3` (untagged content) + `7.2-34` (no
-  language). Both are pure-Python reachable and both are implemented.
+  language) — 99.38% after de-duplicating the byte-identical pair (15 distinct documents). Both
+  are pure-Python reachable and both are implemented.
 - Of the 23 distinct rules that fired, 8 are reachable by the prototype's approach.
 - The prototype reaches the correct non-compliant/clean verdict on **13/16** files.
 - The 3 misses are all "structurally clean but fails a font rule or a form-field rule" — a
@@ -377,7 +403,9 @@ that dominate real `.gov` PDFs.
 ### The honest scope, stated up front
 
 This tool is a **fast, JVM-free triage gate** — not a veraPDF replacement. It answers *"is this
-PDF structurally in the ballpark of PDF/UA?"* in ~50 ms with no JVM, which is what you want on
+PDF structurally in the ballpark of PDF/UA?"* in milliseconds to ~1.5 s depending on document size
+(measured: ~2–3 ms for a 184 KB document, ~1.4 s for the 3.9 MB `ada.gov` web-rule PDF — see the
+README) with no JVM, which is what you want on
 every commit. veraPDF remains the authority and should be run for final conformance claims. The
 README opens with this and has a `## What this does NOT check` section.
 
@@ -385,7 +413,7 @@ README opens with this and has a `## What this does NOT check` section.
 
 | condition | result |
 |---|---|
-| Pure-Python catches a meaningful share of real PDF/UA failures that matter | ✅ 99.55% of failed checks are two reachable rules; 13/16 verdict agreement |
+| Pure-Python catches a meaningful share of real PDF/UA failures that matter | ✅ 99.55% of failed checks are two reachable rules (99.38% over 15 distinct documents); 13/16 verdict agreement |
 | The wedge is genuinely packaging (no JVM, `pip install`, SARIF) | ✅ dominant rules are trivially checkable; veraPDF and opendataloader both require a JVM |
 | Free tooling already covers it | ❌ `wcag_pdf_pytest` is regex false-assurance; `pdf-a11y` wraps veraPDF; `opendataloader` free tier is a Java CLI |
 

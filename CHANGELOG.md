@@ -38,6 +38,6 @@ Initial release.
 - This is 12 checks covering 16 of the 106 machine-checkable rules in the
   PDF/UA-1 profile. The other 90 are not checked. See the README section
   "What this does NOT check".
-- Development was validated against veraPDF 1.30.2 on a 16-document corpus of
-  real `govinfo.gov`, `irs.gov` and `ada.gov` PDFs. See
+- Development was validated against veraPDF 1.30.2 on a 16-file corpus (15
+  distinct documents) of real `govinfo.gov`, `irs.gov` and `ada.gov` PDFs. See
   `docs/FALSIFICATION.md` for the evidence.

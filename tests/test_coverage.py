@@ -7,6 +7,9 @@ exist, these fail.
 
 from __future__ import annotations
 
+import re
+from pathlib import Path
+
 from pdfua.catalog import (
     PDFUA1_TOTAL_RULES,
     clause_summary,
@@ -16,6 +19,11 @@ from pdfua.catalog import (
     unchecked_rules,
 )
 from pdfua.rules import default_registry
+
+#: The README's coverage line quotes the exact string ``coverage().summary()``
+#: prints, in a trailing ``# "..."`` comment.
+README_PATH = Path(__file__).resolve().parent.parent / "README.md"
+_README_SUMMARY_PATTERN = re.compile(r'print\(cov\.summary\(\)\)\s*#\s*"([^"]+)"')
 
 
 class TestCatalogueIntegrity:
@@ -91,3 +99,35 @@ class TestRuleDescriptions:
         for rule in default_registry():
             if rule.pdfua_clause is not None:
                 assert rule.covers, f"{rule.id} names clause {rule.pdfua_clause} but covers nothing"
+
+
+class TestReadmeCoverageLine:
+    """The README quotes ``coverage().summary()``; it must stay true.
+
+    The README previously drifted (it claimed ``12 of 106 (11%)`` while the
+    registry reported ``16 of 106 (15%)``) because nothing checked the quoted
+    string against the code. This test closes that loop: the README's quoted
+    coverage line must equal the registry's own summary, or the suite fails.
+    """
+
+    def _readme_text(self) -> str:
+        assert README_PATH.is_file(), f"README not found at {README_PATH}"
+        return README_PATH.read_text(encoding="utf-8")
+
+    def test_readme_quotes_the_registry_coverage_summary(self) -> None:
+        text = self._readme_text()
+        match = _README_SUMMARY_PATTERN.search(text)
+        assert match is not None, (
+            "Could not find the coverage line in README.md. Expected a line of the "
+            'form: print(cov.summary())  # "<summary>" . If the README was '
+            "restructured, update _README_SUMMARY_PATTERN in this test so the "
+            "coverage claim keeps being checked rather than silently unverified."
+        )
+        quoted = match.group(1)
+        actual = coverage().summary()
+        assert quoted == actual, (
+            "README.md's quoted coverage summary has drifted from the registry.\n"
+            f"  README says : {quoted!r}\n"
+            f"  Registry says: {actual!r}\n"
+            "Update the README comment to match coverage().summary()."
+        )
