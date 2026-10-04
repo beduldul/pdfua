@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-04
+
+### Changed
+
+- Packaging and release metadata only; no code or behaviour changes. Added
+  complete PyPI metadata (PEP 639 `license` expression, author, project URLs
+  and classifiers) and a Trusted Publishing (OIDC) release workflow that
+  publishes on `v*` tags.
+
 ## [0.1.0] - 2026-09-29
 
 Initial release.
