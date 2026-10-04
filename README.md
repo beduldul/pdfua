@@ -1,3 +1,4 @@
+[![CI](https://github.com/beduldul/pdfua/actions/workflows/ci.yml/badge.svg)](https://github.com/beduldul/pdfua/actions/workflows/ci.yml)
 # pdfua
 
 **Check the machine-checkable subset of PDF/UA-1 and WCAG 2.1 for PDFs — in pure
