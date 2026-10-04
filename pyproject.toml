@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "pdfua"
 version = "0.1.0"
-description = "Check the machine-checkable subset of PDF/UA-1 and WCAG 2.1 for PDFs, in pure Python with no JVM"
+description = "Check the machine-checkable subset of PDF/UA-1 and WCAG 2.1 for PDFs in Python, built on pikepdf with no JVM"
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.10"
 license = "MIT"
@@ -15,7 +15,6 @@ keywords = ["pdf", "pdfua", "pdf-ua", "accessibility", "a11y", "wcag", "ada", "s
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Developers",
-  "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.10",

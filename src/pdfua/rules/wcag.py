@@ -2,7 +2,7 @@
 
 PDF/UA-1 §7.18 requires every annotation to be either a real tagged element or
 an artifact, and requires links to carry an alternate description. These are the
-WCAG-facing checks that a pure-Python tool can decide with certainty.
+WCAG-facing checks that a Python tool can decide with certainty, with no JVM.
 """
 
 from __future__ import annotations

@@ -1,8 +1,8 @@
 [![CI](https://github.com/beduldul/pdfua/actions/workflows/ci.yml/badge.svg)](https://github.com/beduldul/pdfua/actions/workflows/ci.yml)
 # pdfua
 
-**Check the machine-checkable subset of PDF/UA-1 and WCAG 2.1 for PDFs — in pure
-Python, with no JVM.**
+**Check the machine-checkable subset of PDF/UA-1 and WCAG 2.1 for PDFs — a small
+Python package built on `pikepdf` (QPDF), with no JVM.**
 
 ```bash
 pip install "git+https://github.com/beduldul/pdfua.git"
@@ -71,8 +71,8 @@ that shaped the design:
 - **veraPDF reports 0 of 16 compliant.** All 16 fail PDF/UA-1.
 - **99.55% of the 643,471 failed checks are two rules** — `7.1-3` ("content shall
   be marked as Artifact or tagged as real content") and `7.2-34` ("natural
-  language for text in page content shall be determined"). Both are pure-Python
-  reachable, and both are implemented here. A prototype's untagged-text counter
+  language for text in page content shall be determined"). Both are reachable in
+  Python without a JVM, and both are implemented here. A prototype's untagged-text counter
   tracked veraPDF's `7.1-3` at 92–99.9% agreement (e.g. 86,118 vs 86,131 on one
   1,039-page document).
 
