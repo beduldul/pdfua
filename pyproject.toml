@@ -1,15 +1,16 @@
 [build-system]
-requires = ["hatchling>=1.25"]
+requires = ["hatchling>=1.27"]
 build-backend = "hatchling.build"
 
 [project]
 name = "pdfua"
 version = "0.1.0"
-description = "Check the machine-checkable subset of PDF/UA-1 and WCAG 2.1 for PDFs, in pure Python. No JVM."
-readme = "README.md"
+description = "Check the machine-checkable subset of PDF/UA-1 and WCAG 2.1 for PDFs, in pure Python with no JVM"
+readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.10"
-license = { file = "LICENSE" }
-authors = [{ name = "beduldul", email = "alkaysan07@gmail.com" }]
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Abdul Afif Al Kaysan", email = "alkaysan07@gmail.com" }]
 keywords = ["pdf", "pdfua", "pdf-ua", "accessibility", "a11y", "wcag", "ada", "section508", "validator", "sarif"]
 classifiers = [
   "Development Status :: 3 - Alpha",
