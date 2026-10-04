@@ -5,7 +5,7 @@
 Python, with no JVM.**
 
 ```bash
-pip install pdfua
+pip install "git+https://github.com/beduldul/pdfua.git"
 pdfua check report.pdf --format sarif
 ```
 
@@ -56,8 +56,8 @@ consequently a need to *check* PDFs automatically.
 | **wcag_pdf_pytest** | Regex-scans raw PDF bytes for `/StructTreeRoot` and returns hardcoded passes for most criteria ("Heuristic pass: … not applicable"). It reports PASS on criteria it never examined. |
 | Commercial services | Per-document pricing; not a build gate. |
 
-`pdfua` occupies the empty slot: **`pip install`, no JVM, structured output, exit
-codes.** It checks the failure classes that actually dominate real government
+`pdfua` occupies the empty slot: **a `pip install` from GitHub, no JVM, structured
+output, exit codes.** It checks the failure classes that actually dominate real government
 PDFs, and it says plainly what it did not check.
 
 ### What the evidence showed
@@ -90,8 +90,12 @@ are cheap to detect and currently require a JVM to detect.
 
 ## Install
 
+**Not yet on PyPI — install from GitHub for now.**
+
 ```bash
-pip install pdfua
+pip install "git+https://github.com/beduldul/pdfua.git"
+# or with uv:
+uv pip install "git+https://github.com/beduldul/pdfua.git"
 ```
 
 Requires Python 3.10+ and `pikepdf`. No JVM, no Java, no external binary.
