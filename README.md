@@ -1,11 +1,12 @@
 [![CI](https://github.com/beduldul/pdfua/actions/workflows/ci.yml/badge.svg)](https://github.com/beduldul/pdfua/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/pdfua.svg)](https://pypi.org/project/pdfua/)
 # pdfua
 
 **Check the machine-checkable subset of PDF/UA-1 and WCAG 2.1 for PDFs — a small
 Python package built on `pikepdf` (QPDF), with no JVM.**
 
 ```bash
-pip install "git+https://github.com/beduldul/pdfua.git"
+pip install pdfua
 pdfua check report.pdf --format sarif
 ```
 
@@ -56,7 +57,7 @@ consequently a need to *check* PDFs automatically.
 | **wcag_pdf_pytest** | Regex-scans raw PDF bytes for `/StructTreeRoot` and returns hardcoded passes for most criteria ("Heuristic pass: … not applicable"). It reports PASS on criteria it never examined. |
 | Commercial services | Per-document pricing; not a build gate. |
 
-`pdfua` occupies the empty slot: **a `pip install` from GitHub, no JVM, structured
+`pdfua` occupies the empty slot: **a `pip install`, no JVM, structured
 output, exit codes.** It checks the failure classes that actually dominate real government
 PDFs, and it says plainly what it did not check.
 
@@ -90,12 +91,16 @@ are cheap to detect and currently require a JVM to detect.
 
 ## Install
 
-**Not yet on PyPI — install from GitHub for now.**
+```bash
+pip install pdfua
+# or with uv:
+uv pip install pdfua
+```
+
+To track `main` instead of a release:
 
 ```bash
 pip install "git+https://github.com/beduldul/pdfua.git"
-# or with uv:
-uv pip install "git+https://github.com/beduldul/pdfua.git"
 ```
 
 Requires Python 3.10+ and `pikepdf`. No JVM, no Java, no external binary.

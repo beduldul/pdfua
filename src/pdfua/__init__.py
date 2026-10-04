@@ -23,7 +23,7 @@ from .model import Confidence, Finding, Location, Report, Severity
 from .rules import default_registry
 from .validator import Validator, ValidatorOptions, validate
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 __all__ = [
     "Confidence",
