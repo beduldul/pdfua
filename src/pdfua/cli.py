@@ -8,6 +8,7 @@ import io
 import os
 import sys
 from collections.abc import Sequence
+from typing import NoReturn
 
 from . import __version__
 from .catalog import (
@@ -20,33 +21,50 @@ from .catalog import (
 )
 from .errors import PdfuaError
 from .model import Severity, filter_findings
-from .reporters import FORMATTERS, format_report
+from .reporters import FORMATTERS, format_report, format_unreadable
 from .rules import RuleRegistry, default_registry
 from .validator import Validator, ValidatorOptions
 
 EXIT_OK = 0
 EXIT_FINDINGS = 1
-EXIT_USAGE = 3
 EXIT_UNREADABLE = 4
+EXIT_USAGE = 5
 
 _EPILOG = """\
 exit codes:
   0  no findings
   1  findings at or above --min-severity (default: any)
-  2  findings at ERROR severity (see below)
-  3  usage error
+  2  findings at WARNING severity
+  3  findings at ERROR severity
   4  the file could not be read as a PDF
+  5  usage error (bad arguments)
 
 When --min-severity is the default, the exit code is ordered by severity:
 0 clean, 1 info, 2 warning, 3 error. So `pdfua check f.pdf || alert` alerts on
 anything, and `pdfua check f.pdf; case $? in 3) alert;; esac` alerts only on
-errors. Gate on SARIF or JSON if you need the finding detail.
+errors. Usage errors use 5, which does not collide with any severity, so a
+script gating on `rc == 2` sees WARNING findings only. Gate on SARIF or JSON if
+you need the finding detail.
 """
+
+
+class _UsageErrorParser(argparse.ArgumentParser):
+    """An ``ArgumentParser`` whose usage errors exit with ``EXIT_USAGE``.
+
+    ``argparse`` exits ``2`` on a usage error, which collides with pdfua's
+    documented "findings at WARNING severity" code. Overriding ``error`` keeps
+    the two distinguishable: a script gating on ``rc == 2`` sees warnings only,
+    and a genuine usage error exits ``5``.
+    """
+
+    def error(self, message: str) -> NoReturn:
+        self.print_usage(sys.stderr)
+        self.exit(EXIT_USAGE, f"{self.prog}: error: {message}\n")
 
 
 def build_parser() -> argparse.ArgumentParser:
     """Construct the argument parser for the ``pdfua`` CLI."""
-    parser = argparse.ArgumentParser(
+    parser = _UsageErrorParser(
         prog="pdfua",
         description=(
             "Check the machine-checkable subset of PDF/UA-1 and the related "
@@ -136,6 +154,9 @@ def _cmd_check(args: argparse.Namespace) -> int:
             report = validator.validate(path)
         except PdfuaError as exc:
             print(f"pdfua: {exc}", file=sys.stderr)
+            record = format_unreadable(path, str(exc), args.format)
+            if record is not None:
+                print(record)
             exit_code = max(exit_code, EXIT_UNREADABLE)
             continue
 

@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-10-05
+
+### Fixed
+
+- **Usage errors now exit `5`, not `2`.** `argparse` exits `2` on a bad argument,
+  which collided with the documented "findings at WARNING severity" code: a
+  script gating on `rc == 2` could not tell a warning from a typo. The CLI now
+  overrides argparse's exit code, so `2` unambiguously means WARNING and a
+  malformed command line exits `5`. This changes the observed exit code for bad
+  usage from `2` to `5`.
+- **The `--help` epilog no longer contradicts the README exit-code table.** It
+  previously listed `2` as "findings at ERROR severity" and `3` as "usage error",
+  omitting WARNING entirely; it now matches the README exactly.
+- **An unreadable file is recorded in machine-readable output.** With
+  `--format sarif` or `--format json`, a file that cannot be read now also emits
+  a structured record to stdout (a SARIF result with
+  `executionSuccessful: false`, or a JSON object with `"readable": false`), so
+  `pdfua check *.pdf --format sarif > results.sarif` no longer exits `4` while
+  producing a log with no trace of the failure.
+
+### Added
+
+- `TestDocumentedExitCodeContract` runs the real CLI in a subprocess and pins
+  every documented exit code (0/1/2/3/4/5), including that usage errors are `5`
+  and that the `--help` epilog documents every code the CLI emits.
+
 ## [0.1.2] - 2026-10-04
 
 ### Changed

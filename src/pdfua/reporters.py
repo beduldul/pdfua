@@ -194,6 +194,71 @@ def format_text(report: Report, *, coverage_info: Coverage | None = None) -> str
     return "\n".join(lines)
 
 
+def format_unreadable(path: str, message: str, fmt: str) -> str | None:
+    """Render a structured record for a file that could not be read as a PDF.
+
+    The human ``text`` format has nothing useful to add to the error already
+    written to stderr, so it returns ``None``. The machine formats do, because
+    a redirection such as ``pdfua check *.pdf --format sarif > results.sarif``
+    must not silently lose the file: it would exit 4 while the SARIF log
+    contained no record of the failure at all.
+
+    Args:
+        path: The file that could not be read.
+        message: The error text (already printed to stderr).
+        fmt: One of ``text``, ``json`` or ``sarif``.
+
+    Returns:
+        The serialised record, or ``None`` when the format has no structured
+        representation to emit.
+    """
+    if fmt == "text":
+        return None
+    if fmt == "json":
+        return json.dumps(
+            {
+                "file": path,
+                "readable": False,
+                "error": message,
+                "exit_code": 4,  # the documented "could not be read" code
+            },
+            indent=2,
+        )
+    if fmt == "sarif":
+        payload = {
+            "$schema": SARIF_SCHEMA,
+            "version": SARIF_VERSION,
+            "runs": [
+                {
+                    "tool": {
+                        "driver": {
+                            "name": "pdfua",
+                            "informationUri": "https://github.com/beduldul/pdfua",
+                            "rules": [],
+                        }
+                    },
+                    "results": [
+                        {
+                            "ruleId": "PDFUA-READ-001",
+                            "level": "error",
+                            "message": {"text": f"could not be read as a PDF: {message}"},
+                            "locations": [
+                                {
+                                    "physicalLocation": {
+                                        "artifactLocation": {"uri": _file_uri(path)},
+                                    }
+                                }
+                            ],
+                        }
+                    ],
+                    "invocations": [{"executionSuccessful": False}],
+                }
+            ],
+        }
+        return json.dumps(payload, indent=2, sort_keys=False)
+    return None
+
+
 FORMATTERS = {
     "json": format_json,
     "sarif": format_sarif,
@@ -227,4 +292,5 @@ __all__ = [
     "format_report",
     "format_sarif",
     "format_text",
+    "format_unreadable",
 ]

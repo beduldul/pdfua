@@ -137,6 +137,7 @@ pdfua rules                     # what is implemented, and what is not
 | `2` | Findings at WARNING severity |
 | `3` | Findings at ERROR severity |
 | `4` | The file could not be read as a PDF |
+| `5` | Usage error (bad arguments) |
 
 With `--min-severity` set, any surviving finding exits `1`. Without it, the exit
 code is ordered by severity, so the obvious thing works:
@@ -144,6 +145,17 @@ code is ordered by severity, so the obvious thing works:
 ```bash
 pdfua check report.pdf || echo "PDF/UA problems found"
 ```
+
+**Usage errors use `5`, not `2`.** `argparse` exits `2` on a bad argument by
+default, which would collide with the WARNING code and make `rc == 2`
+ambiguous. The CLI overrides that, so `2` unambiguously means "warning
+findings" and a malformed command line exits `5`.
+
+When a file cannot be read, the error goes to stderr and the exit code is `4`.
+With `--format sarif` or `--format json` a structured record of the failure is
+also written to **stdout**, so `pdfua check *.pdf --format sarif > results.sarif`
+does not silently drop the unreadable file from the log. The `text` format
+writes only the stderr line.
 
 ### Library
 

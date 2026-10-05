@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -36,10 +38,10 @@ class TestExitCodes:
     ) -> None:
         assert main(["check", str(tmp_path / "nope.pdf")]) == 4
 
-    def test_unknown_rule_selector_exits_three(
+    def test_unknown_rule_selector_exits_five(
         self, valid_pdf: Path, capsys: pytest.CaptureFixture[str]
     ) -> None:
-        assert main(["check", str(valid_pdf), "--rules", "UA-99-999"]) == 3
+        assert main(["check", str(valid_pdf), "--rules", "UA-99-999"]) == 5
 
     def test_min_severity_flattens_exit_code_to_one(
         self, violating_pdfs: dict[str, Path], capsys: pytest.CaptureFixture[str]
@@ -58,6 +60,69 @@ class TestExitCodes:
     ) -> None:
         assert main(["check", str(valid_pdf), "--quiet"]) == 0
         assert capsys.readouterr().out == ""
+
+
+class TestDocumentedExitCodeContract:
+    """Pin every exit code the README and `--help` document, against the real CLI.
+
+    These run ``python -m pdfua`` in a subprocess so the assertion covers what a
+    user actually sees — including argparse's own exit code, which a direct
+    ``main()`` call bypasses (argparse raises ``SystemExit``).
+    """
+
+    @staticmethod
+    def _run(*args: str) -> subprocess.CompletedProcess[str]:
+        return subprocess.run(
+            [sys.executable, "-m", "pdfua", *args],
+            capture_output=True,
+            text=True,
+        )
+
+    def test_zero_when_no_findings(self, valid_pdf: Path) -> None:
+        assert self._run("check", str(valid_pdf)).returncode == 0
+
+    def test_two_for_warning_findings(self, violating_pdfs: dict[str, Path]) -> None:
+        assert self._run("check", str(violating_pdfs["no_title"])).returncode == 2
+
+    def test_three_for_error_findings(self, violating_pdfs: dict[str, Path]) -> None:
+        assert self._run("check", str(violating_pdfs["untagged"])).returncode == 3
+
+    def test_four_for_unreadable_file(self, unreadable_pdf: Path) -> None:
+        assert self._run("check", str(unreadable_pdf)).returncode == 4
+
+    def test_five_for_usage_error_not_two(self) -> None:
+        """A bad command line exits 5, so it cannot be confused with WARNING=2."""
+        result = self._run("check")  # no FILE argument
+        assert result.returncode == 5
+        assert "usage:" in result.stderr
+
+    def test_one_for_findings_with_min_severity(self, violating_pdfs: dict[str, Path]) -> None:
+        result = self._run("check", str(violating_pdfs["untagged"]), "--min-severity", "error")
+        assert result.returncode == 1
+
+    def test_sarif_redirect_records_unreadable_file(
+        self, unreadable_pdf: Path
+    ) -> None:
+        """`pdfua check *.pdf --format sarif > out` must not silently drop a file."""
+        result = self._run("check", str(unreadable_pdf), "--format", "sarif")
+        assert result.returncode == 4
+        payload = json.loads(result.stdout)
+        results = payload["runs"][0]["results"]
+        assert results and results[0]["ruleId"] == "PDFUA-READ-001"
+        assert payload["runs"][0]["invocations"][0]["executionSuccessful"] is False
+
+    def test_help_documents_every_code_the_cli_emits(self) -> None:
+        """The `--help` epilog must not contradict the exit-code table."""
+        help_text = self._run("--help").stdout
+        for code, meaning in [
+            ("0", "no findings"),
+            ("1", "findings at or above --min-severity"),
+            ("2", "findings at WARNING severity"),
+            ("3", "findings at ERROR severity"),
+            ("4", "the file could not be read as a PDF"),
+            ("5", "usage error"),
+        ]:
+            assert f"{code}  {meaning}" in help_text
 
 
 class TestFormats:
